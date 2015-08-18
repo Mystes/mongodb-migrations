@@ -32,5 +32,8 @@ buildMongoConnString = (config) ->
 
 exports.connect = (config, cb) ->
   poolSize = config.poolSize ? DEFAULT_POOL_SIZE
+  url = config.url ? buildMongoConnString(config)
+  connectionOptions = { server: { poolSize } }
+  connectionOptions.mongos = config.mongos ? {}
 
-  MongoClient.connect buildMongoConnString(config), { server: { poolSize } }, cb
+  MongoClient.connect url, connectionOptions, cb
